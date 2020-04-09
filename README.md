@@ -35,10 +35,10 @@ Vrací naparsovaná data jako `dict`
 Bakalářů. Vypadá zhruba takto:
 
 ```python
-{'UserUID': '',
- 'Class': {'Id': '', 'Abbrev': '1A', 'Name': '1. A'},
- 'FullName': 'Novák Jan, 1. A',
- 'SchoolOrganizationName': 'Název školy',
+{'UserUID': '...',
+ 'Class': <trida>,
+ 'FullName': '...',
+ 'SchoolOrganizationName': '...',
  'SchoolType': None,
  'UserType': 'student',
  'UserTypeText': 'žák',
@@ -53,6 +53,11 @@ Bakalářů. Vypadá zhruba takto:
 Známé názvy modulů:  
 Komens, Absence, Events, Marks, Timetable, Substitutions, Subjects, Homeworks, Gdpr
 
+Třída je jednoduchý `dict`, vypadá takto:
+
+```python
+{'Id': '...', 'Abbrev': '...', 'Name': '...'}
+```
 `get_homework()` získá seznam všech úkolů, vrací `dict` tak, jak ho dostane od
 Bakalářů. Vypadá takto:
 
@@ -85,17 +90,13 @@ Každý úkol vypadá zhruba takto:
  'Attachments': [<prilohy>]}
 ```
 
-Třída, skupina, předmět a učitel jsou každý takovýto `dict`:
-
-```python
-{'Id': '...', 'Abbrev': '...', 'Name': '...'}
-```
+Třída, skupina, předmět a učitel jsou jednoduchý `dict`, viz třída u `get_user_info()`
 
 Každá příloha vypadá takto:
 
 ```python
-{'Id': 'ABCDEFG',
-     'Name': 'Název souboru',
+{'Id': '...',
+     'Name': '...',
      'Type': 'mime/type'}
 ```
 
@@ -133,7 +134,9 @@ Každá zpráva vypadá zhruba takto:
  'RelevantPersonType': 'teacher|administrator|...?'}
 ```
 
-Formát odesílatele a příloh viz domácí úkoly výše
+Odesílatel je jednoduchý `dict`, viz třída u `get_user_info()`
+
+Pro formát přílohy viz úkoly.
 
 `download_attachment(attachment_id)` stáhne přílohu s daným ID.  
 Vrací dvojici `filename`,
