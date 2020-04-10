@@ -164,7 +164,7 @@ Vrací dvojici `filename`,
   '...'
 ]}
 >>> with open("Ukol.doc", "wb") as fh:
-...   fh.write(u.download_attachment("EFAAAAG").content)
+...   fh.write(u.download_attachment("EFAAAAG")[1].read())
 ```
 
 ### Použití jako Mixin
