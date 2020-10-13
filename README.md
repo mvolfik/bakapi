@@ -9,15 +9,28 @@ Bakapi
 
 Jednoduchý klient k API Bakalářů pro Python.
 
+## Changelog
+
+### 0.2 (2020-10-13)
+ - Umožnění vytvoření klienta bez hesla, pouze z `refresh_token`u, případně spolu s
+   `access_token`em a jeho platností.
+
+ - Přidán volitelný parametr `since` k domácím úkolům. Když není zadán, tak Bakaláři
+   vrátí jen úkoly z posledních dvou měsíců (viz [API dokumentace](https://github.com/bakalari-api/bakalari-api-v3/blob/master/moduly/%C3%BAkoly.md))
+
+### 0.1 (2020-04-09)
+První release
+
 ## Dokumentace
 
 _The code is the documentation. (Pls naučte mě někdo Sphinx)_
 
 Modul obsahuje hlavní třídu `BakapiUser`.
 
-Konstruktor vyžaduje tři **keyword** argumenty:
-`url`, `username` a `password`. Tyto využije k získání prvního `access_token`u a
-`refresh_token`u.
+Konstruktor vždy vyžaduje dva **keyword** argumenty: `url` a `username`. Dále vyžaduje
+buď `password`, které je okamžitě použito k získání `access_token`u, nebo
+`refresh_token`, volitelně spolu s `access_token` a `token_valid_until`. Ty jsou
+uloženy a token je v případě potřeby obnoven až při prvním API požadavku.
 
 ### Metody instancí `BakapiUser`
 
@@ -58,8 +71,11 @@ Třída je jednoduchý `dict`, vypadá takto:
 ```python
 {'Id': '...', 'Abbrev': '...', 'Name': '...'}
 ```
+
 `get_homework()` získá seznam všech úkolů, vrací `dict` tak, jak ho dostane od
-Bakalářů. Vypadá takto:
+Bakalářů. Přijímá volitelný parametr `since`, kterým lze omezit datum, od kterého jsou
+brané úkoly. Může být `datetime.date`, `datetime.datetime` nebo `"YYYY-MM-DD"`.
+Odpověď vypadá takto:
 
 ```python
 {"Homeworks": [
@@ -201,7 +217,7 @@ nepotřebné init parametry. Ostatní classy to ale dělat nemusí (a právě na
 DeclarativeBase to nedělá).
 - Nemusíte definovat metodu `__init__`, ale pokud ji definujete, musí volat
 `super().__init__()`
-- Konstruktor příjímá tři povinné keyword argumenty – `url, username, password`. Cokoliv
+- Konstruktor příjímá povinné keyword argumenty (viz začátek). Cokoliv
 dalšího pošle dál
 
 Pro pochopení doporučuji

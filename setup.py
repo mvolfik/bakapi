@@ -5,7 +5,7 @@ with open("README.md", "rt", encoding="utf8") as f:
 
 setup(
     name="bakapi",
-    version="0.1",
+    version="0.2",
     url="https://github.com/mvolfik/bakapi",
     project_urls={
         "Documentation": "https://github.com/mvolfik/bakapi/blob/master/README.md",
