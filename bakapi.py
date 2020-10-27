@@ -1,6 +1,6 @@
 import warnings
 from cgi import parse_header
-from datetime import date, datetime, timedelta
+from datetime import date, datetime, timedelta, timezone
 from typing import Union
 from urllib.parse import quote, unquote, urljoin
 
@@ -69,7 +69,7 @@ class BakapiUser:
     def authenticate(self, data):
         """Takes authentication data, sends request and stores results"""
 
-        t = datetime.now()
+        t = datetime.now(tz=timezone.utc)
         r = requests.post(urljoin(self.url, "api/login"), data=data)
         if not r.headers["Content-Type"].lower().startswith("application/json"):
             raise InvalidResponse
@@ -116,7 +116,14 @@ class BakapiUser:
         if (
             self.access_token is None
             or self.token_valid_until is None
-            or self.token_valid_until < datetime.now()
+            or (
+                self.token_valid_until.tzinfo is None
+                and self.token_valid_until < datetime.utcnow()
+            )
+            or (
+                self.token_valid_until.tzinfo is not None
+                and self.token_valid_until < datetime.now(tz=timezone.utc)
+            )
         ):
             self.use_refresh_token()
 
@@ -160,10 +167,17 @@ class BakapiUser:
     def get_user_info(self):
         return self.query_api("api/3/user")
 
-    def get_homework(self, since: Union[datetime, date, str] = None):
+    def get_homework(
+        self,
+        since: Union[datetime, date, str] = None,
+        to: Union[datetime, date, str] = None,
+    ):
         if type(since) in (date, datetime):
             since = since.strftime("%Y-%m-%d")
-        return self.query_api("api/3/homeworks", params={"from": since})
+        if type(to) in (date, datetime):
+            to = to.strftime("%Y-%m-%d")
+
+        return self.query_api("api/3/homeworks", params={"from": since, "to": to})
 
     def get_received_komens_messages(self):
         return self.query_api("api/3/komens/messages/received", method="POST")

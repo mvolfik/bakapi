@@ -11,6 +11,12 @@ Jednoduchý klient k API Bakalářů pro Python.
 
 ## Changelog
 
+### 0.3 (2020-10-27)
+ - Nyní jsou defaultně používané timezone-aware datetimes. Pokud je `token_valid_until`
+   timezone-unaware, předpokládá se že je v UTC.
+
+ - Přidán volitelný parametr `to` k domácím úkolům, viz změny v [API dokumentaci](https://github.com/bakalari-api/bakalari-api-v3/blob/master/moduly/%C3%BAkoly.md)
+
 ### 0.2 (2020-10-13)
  - Umožnění vytvoření klienta bez hesla, pouze z `refresh_token`u, případně spolu s
    `access_token`em a jeho platností.
