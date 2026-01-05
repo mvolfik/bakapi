@@ -1,5 +1,4 @@
 import warnings
-from cgi import parse_header
 from datetime import date, datetime, timedelta, timezone
 from typing import Union
 from urllib.parse import quote, unquote, urljoin
@@ -192,6 +191,13 @@ class BakapiUser:
             raise InvalidResponse
 
         filename = unquote(
-            parse_header(r.headers["Content-Disposition"])[1]["filename*"][7:]
+            parse_separated_header(r.headers["Content-Disposition"])["filename"][2]
         )
         return filename, r.raw
+
+def parse_separated_header(value: str):
+    # Adapted from https://peps.python.org/pep-0594/#cgi
+    from email.message import Message
+    m = Message()
+    m['content-type'] = value
+    return dict(m.get_params())
