@@ -11,6 +11,10 @@ Jednoduchý klient k API Bakalářů pro Python.
 
 ## Changelog
 
+### 0.3.1 (2026-01-06)
+
+- Odstraněna závislost na odebraném modulu `cgi` ze standardní knihovny.
+
 ### 0.3 (2020-10-27)
  - Nyní jsou defaultně používané timezone-aware datetimes. Pokud je `token_valid_until`
    timezone-unaware, předpokládá se že je v UTC.
